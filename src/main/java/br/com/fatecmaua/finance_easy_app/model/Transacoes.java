@@ -25,21 +25,32 @@ public class Transacoes {
 	private TipoEnum tipo; // tipo -> Renda / Gasto
 	@Enumerated(EnumType.STRING)
 	private CategoriaEnum categoria; // categoria da transação
+	@Enumerated(EnumType.STRING)
+	private PagEnum MetodoPagamento; // meio pag isso aí 👌
 	
 	public Transacoes() {
 		
 	}
 	
-	public Transacoes(Long id, String descricao, CategoriaEnum categoria, TipoEnum tipo, LocalDate data,
+	public Transacoes(Long id, String descricao, CategoriaEnum categoria, TipoEnum tipo, PagEnum MetodoPagamento, LocalDate data,
 			Double valor, Double valorAtual) {
 		super();
 		this.id = id;
 		this.descricao = descricao;
 		this.categoria = categoria;
+		this.MetodoPagamento = MetodoPagamento;
 		this.tipo = tipo;
 		this.data = data;
 		this.valor = valor;
 		this.valorAtual = valorAtual;
+	}
+
+	public PagEnum getMetodoPagamento() {
+		return MetodoPagamento;
+	}
+
+	public void setMetodoPagamento(PagEnum metodoPagamento) {
+		MetodoPagamento = metodoPagamento;
 	}
 
 	public Long getId() {
