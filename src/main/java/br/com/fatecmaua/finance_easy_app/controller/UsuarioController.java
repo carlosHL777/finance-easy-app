@@ -3,6 +3,7 @@ package br.com.fatecmaua.finance_easy_app.controller;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,7 +39,7 @@ public class UsuarioController {
    @Operation(description = "Endpoint que busca Usuarios por ID.",
    		tags = "Busca de Informações")
    @GetMapping("/usuarios/{id}")
-   public Usuario buscarId(Long id) {
+   public Usuario buscarId(@PathVariable Long id) {
 	   return serviceUser.buscarPorId(id);
    }
 	
