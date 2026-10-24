@@ -10,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "usuarios")
@@ -19,9 +20,12 @@ public class Usuario {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+	@NotBlank
+	@Column(nullable = false) // evitando null
 	private String nome;
 	private String profissao;
-	@Column(unique = true) // email ÚNICO, n pode ter mais de um no mesmo
+	@NotBlank
+	@Column(unique = true, nullable = false) // email ÚNICO, n pode ter mais de um no mesmo
 	private String email;
 	@Column(length = 100) // para salvar HASH da senha corretamente😜
 	private String senha;

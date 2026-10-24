@@ -1,28 +1,45 @@
 package br.com.fatecmaua.finance_easy_app.controller;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import java.util.List;
+
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.fatecmaua.finance_easy_app.model.Usuario;
 import br.com.fatecmaua.finance_easy_app.service.UsuarioService;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 
 @RestController
 public class UsuarioController {
 
-	private final UsuarioService usuarioService;
+	private final UsuarioService serviceUser;
 
-    public UsuarioController(UsuarioService usuarioService) {
-        this.usuarioService = usuarioService;
+    public UsuarioController(UsuarioService serviceUser) {
+        this.serviceUser = serviceUser;
     }
 
-    @PostMapping
-    public ResponseEntity<Usuario> cadastrar(@Valid @RequestBody Usuario usuario) {
-        Usuario salvo = usuarioService.cadastrar(usuario);
-        return ResponseEntity.status(HttpStatus.CREATED).body(salvo);
+    @Operation(description = "Endpoint de cadastro de Usuário",
+    		tags = "Inserção de Info")
+    @PostMapping("/cadastrar")
+    public Usuario cadastrar(@Valid @RequestBody Usuario usuario) {
+        return serviceUser.cadastrar(usuario);
     }
+    
+   @Operation(description = "Endpoint que retorna todos Usuarios.",
+    		tags = "Busca de Informações")
+    @GetMapping("/usuarios/todos")
+    public List<Usuario> listarUsuarios(){
+    	return serviceUser.listar();
+    }
+   
+   @Operation(description = "Endpoint que busca Usuarios por ID.",
+   		tags = "Busca de Informações")
+   @GetMapping("/usuarios/{id}")
+   public Usuario buscarId(Long id) {
+	   return serviceUser.buscarPorId(id);
+   }
 	
 }
