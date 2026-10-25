@@ -1,7 +1,9 @@
 package br.com.fatecmaua.finance_easy_app.controller;
 
 import java.util.List;
+import java.util.Map;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -43,4 +45,10 @@ public class UsuarioController {
 	   return serviceUser.buscarPorId(id);
    }
 	
+   @GetMapping("/me")
+   public Map<String, String> me(Authentication authentication) {
+	   return Map.of(
+			   "email", authentication.getName(),
+			   "permissoes", authentication.getAuthorities().toString());
+   }
 }
