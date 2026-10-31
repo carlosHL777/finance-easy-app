@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -22,11 +21,9 @@ public class UsuarioService {
 
 	@Autowired
 	private final UsuarioRepository repUser;
-	private final PasswordEncoder passwordEncoder;
 
-	public UsuarioService(UsuarioRepository repUser, PasswordEncoder passwordEncoder) { // injeção de dependência
+	public UsuarioService(UsuarioRepository repUser) { // injeção de dependência
 		this.repUser = repUser;
-		this.passwordEncoder = passwordEncoder;
 	}
 
 	public Usuario cadastrar(Usuario usuario) {
@@ -40,7 +37,7 @@ public class UsuarioService {
 		usuario.setId(null); // sempre sera null para nao repetir
 		usuario.setRole(RoleEnum.USER);
 		usuario.setEmail(email);
-		usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
+		usuario.setSenha(usuario.getSenha());
 
 		return repUser.save(usuario);
 	}

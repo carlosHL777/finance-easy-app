@@ -3,7 +3,6 @@ package br.com.fatecmaua.finance_easy_app.controller;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,23 +31,17 @@ public class UsuarioController {
     }
     
    @Operation(description = "Endpoint que retorna todos Usuarios.",
-    		tags = "Busca de Informações")
+    		tags = "Busca de Info")
     @GetMapping("/usuarios/todos")
     public List<Usuario> listarUsuarios(){
     	return serviceUser.listar();
     }
    
    @Operation(description = "Endpoint que busca Usuarios por ID.",
-   		tags = "Busca de Informações")
+   		tags = "Busca de Info")
    @GetMapping("/usuarios/{id}")
    public Usuario buscarId(@PathVariable Long id) {
 	   return serviceUser.buscarPorId(id);
    }
 	
-   @GetMapping("/me")
-   public Map<String, String> me(Authentication authentication) {
-	   return Map.of(
-			   "email", authentication.getName(),
-			   "permissoes", authentication.getAuthorities().toString());
-   }
 }
