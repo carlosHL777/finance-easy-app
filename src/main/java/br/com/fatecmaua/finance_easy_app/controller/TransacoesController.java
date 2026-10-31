@@ -1,6 +1,7 @@
 package br.com.fatecmaua.finance_easy_app.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +26,7 @@ public class TransacoesController {
 			tags = "Inserção de Info")
 	@PostMapping("/transacoes/cadastrar")
 	public Transacoes cadastrar(@RequestBody Transacoes transacao) {
-		return serviceTran.cadastrar(transacao);
+		return serviceTran.criar(transacao);
 	}
 	
 	@Operation(description = "Endpoint resposável por retornar todas Transações.",
@@ -33,5 +34,12 @@ public class TransacoesController {
 	@GetMapping("/transacoes/todas")
 	public List<Transacoes> listar() {
 		return serviceTran.listarTransacoes();
+	}
+	
+	@Operation(description = "Endpoint Teste.",
+			tags = "Busca de Info")
+	@GetMapping("/transacoes/valor-atual")
+	public Double valorAtual(Transacoes transacao) {
+		return serviceTran.ultimoValor(transacao);
 	}
 }
