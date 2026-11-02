@@ -20,44 +20,25 @@ public class TransacoesService {
 		this.repTran = repTran;
 	}
 
-	public Transacoes criar(Transacoes transacao) {
-		
-		transacao.setValorAtual(100.00);
-		Double valorDB = repTran.findTopByOrderByIdDesc().get().getValorAtual();
-		
-		if (transacao.getTipo() == TipoEnum.RENDA) {
-			Double novoValor = transacao.getValorAtual() + valorDB;
-			transacao.setValorAtual(novoValor);
-			transacao.setId(null);
-			transacao.setCategoria(transacao.getCategoria());
-			transacao.setData(transacao.getData());
-			transacao.setDescricao(transacao.getDescricao());
-			transacao.setMetodoPagamento(transacao.getMetodoPagamento());
-			transacao.setTipo(transacao.getTipo());
-			transacao.setValor(transacao.getValor());
-		}
-		
-		Double novoValor = transacao.getValorAtual() - valorDB;
-		transacao.setValorAtual(novoValor);
-		
-		transacao.setId(null);
-		transacao.setCategoria(transacao.getCategoria());
-		transacao.setData(transacao.getData());
-		transacao.setDescricao(transacao.getDescricao());
-		transacao.setMetodoPagamento(transacao.getMetodoPagamento());
-		transacao.setTipo(transacao.getTipo());
-		transacao.setValor(transacao.getValor());
-		
-		
-		return repTran.save(transacao);
-	}
+    public Transacoes criar(Transacoes transacao) {
+        // saldo anterior = valorAtual da última transação, ou 0 se for a primeira
+        double saldoAnterior = repTran.findTopByOrderByIdDesc().get().getValorAtual();
+                
+
+        double valor = transacao.getValor();
+
+        double novoSaldo = (transacao.getTipo() == TipoEnum.RENDA)
+                ? saldoAnterior + valor
+                : saldoAnterior - valor;
+
+        transacao.setId(null);
+        transacao.setValorAtual(novoSaldo);
+
+        return repTran.save(transacao);
+    }
 	
 	public List<Transacoes> listarTransacoes() {
 		return repTran.findAll();
-	}
-	
-	public Double ultimoValor(Transacoes transacao) {
-		return repTran.findTopByOrderByIdDesc().get().getValorAtual();
 	}
 	
 }

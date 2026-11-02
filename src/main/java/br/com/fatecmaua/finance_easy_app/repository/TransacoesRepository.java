@@ -13,4 +13,5 @@ public interface TransacoesRepository extends JpaRepository<Transacoes, Long> {
 	boolean existsById(Long id);
 	
 	Optional<Transacoes> findTopByOrderByIdDesc();
+	
 }

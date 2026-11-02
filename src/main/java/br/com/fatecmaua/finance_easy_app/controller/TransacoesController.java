@@ -5,12 +5,12 @@ import java.util.Optional;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.fatecmaua.finance_easy_app.model.Transacoes;
 import br.com.fatecmaua.finance_easy_app.service.TransacoesService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 @RestController
 public class TransacoesController {
@@ -36,10 +36,4 @@ public class TransacoesController {
 		return serviceTran.listarTransacoes();
 	}
 	
-	@Operation(description = "Endpoint Teste.",
-			tags = "Busca de Info")
-	@GetMapping("/transacoes/valor-atual")
-	public Double valorAtual(Transacoes transacao) {
-		return serviceTran.ultimoValor(transacao);
-	}
 }
