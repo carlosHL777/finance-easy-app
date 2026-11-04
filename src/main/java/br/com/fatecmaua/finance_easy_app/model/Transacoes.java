@@ -2,6 +2,9 @@ package br.com.fatecmaua.finance_easy_app.model;
 
 import java.time.LocalDate;
 
+import org.springframework.boot.context.properties.bind.Name;
+
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -26,7 +29,7 @@ public class Transacoes {
 	@Enumerated(EnumType.STRING)
 	private CategoriaEnum categoria; // categoria da transação
 	@Enumerated(EnumType.STRING)
-	private PagEnum MetodoPagamento; // meio pag isso aí 👌
+	private PagEnum metodoPagamento; // meio pag isso aí 👌
 	
 	public Transacoes() {
 		
@@ -38,7 +41,7 @@ public class Transacoes {
 		this.id = id;
 		this.descricao = descricao;
 		this.categoria = categoria;
-		this.MetodoPagamento = MetodoPagamento;
+		this.metodoPagamento = MetodoPagamento;
 		this.tipo = tipo;
 		this.data = data;
 		this.valor = valor;
@@ -46,11 +49,11 @@ public class Transacoes {
 	}
 
 	public PagEnum getMetodoPagamento() {
-		return MetodoPagamento;
+		return metodoPagamento;
 	}
 
 	public void setMetodoPagamento(PagEnum metodoPagamento) {
-		MetodoPagamento = metodoPagamento;
+		metodoPagamento = metodoPagamento;
 	}
 
 	public Long getId() {

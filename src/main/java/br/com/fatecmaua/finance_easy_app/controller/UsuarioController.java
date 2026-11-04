@@ -25,7 +25,7 @@ public class UsuarioController {
 
     @Operation(description = "Endpoint de cadastro de Usuário",
     		tags = "Inserção de Info")
-    @PostMapping("/cadastrar")
+    @PostMapping("/usuarios/cadastrar")
     public Usuario cadastrar(@Valid @RequestBody Usuario usuario) {
         return serviceUser.cadastrar(usuario);
     }
