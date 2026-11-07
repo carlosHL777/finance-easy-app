@@ -86,30 +86,32 @@ public class TransacoesService {
 	    }
 	}
 	
-//	@Transactional
-//	public void remover(Long id) {
-//	    if (!repTran.existsById(id)) {
-//	        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Transação não encontrada: " + id);
-//	    }
-//	    repTran.deleteById(id);
-//
-//	    // recalcula os saldos acumulados depois da remoção
-//	    double saldo = 0.0;
-//	    List<Transacoes> todas = repTran.findAll(Sort.by("id"));
-//	    for (Transacoes t : todas) {
-//	        saldo += (t.getTipo() == TipoEnum.RENDA) ? t.getValor() : -t.getValor();
-//	        t.setValorAtual(saldo);
-//	    }
-//	    repTran.saveAll(todas);
-//	}
+	@Transactional
+	public void remover(Long id) {
+	    if (!repTran.existsById(id)) {
+	        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+	    }
+	    repTran.deleteById(id);
+
+	    double saldo = 0.0;
+	    List<Transacoes> todas = repTran.findAll(Sort.by("id"));
+	    for (Transacoes t : todas) {
+	    	if (t.getTipo() == TipoEnum.RENDA) {
+	    	    saldo = saldo + t.getValor();
+	    	} else {
+	    	    saldo = saldo - t.getValor();
+	    	}
+	    	t.setValorAtual(saldo);
+	    }
+	    repTran.saveAll(todas);
+	}
 
 	public Transacoes atualizarCategoria(Long id, CategoriaEnum categoria) {
 	    Transacoes transacao = repTran.findById(id).orElseThrow(() ->
-	            new ResponseStatusException(HttpStatus.NOT_FOUND, "Transação não encontrada: " + id));
+	            new ResponseStatusException(HttpStatus.NOT_FOUND));
 
 	    if (categoria.getTipo() != transacao.getTipo()) {
-	        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-	                "A categoria " + categoria + " não pertence ao tipo " + transacao.getTipo());
+	        throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 	    }
 
 	    transacao.setCategoria(categoria);
@@ -118,7 +120,7 @@ public class TransacoesService {
 
 	public Transacoes atualizarMetodoPagamento(Long id, PagEnum metodoPagamento) {
 	    Transacoes transacao = repTran.findById(id).orElseThrow(() ->
-	            new ResponseStatusException(HttpStatus.NOT_FOUND, "Transação não encontrada: " + id));
+	            new ResponseStatusException(HttpStatus.NOT_FOUND));
 
 	    transacao.setMetodoPagamento(metodoPagamento);
 	    return repTran.save(transacao);
@@ -126,7 +128,7 @@ public class TransacoesService {
 
 	public Transacoes atualizarData(Long id, LocalDate data) {
 	    Transacoes transacao = repTran.findById(id).orElseThrow(() ->
-	            new ResponseStatusException(HttpStatus.NOT_FOUND, "Transação não encontrada: " + id));
+	            new ResponseStatusException(HttpStatus.NOT_FOUND));
 
 	    transacao.setData(data);
 	    return repTran.save(transacao);

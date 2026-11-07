@@ -24,21 +24,21 @@ public class UsuarioController {
     }
 
     @Operation(description = "Endpoint de cadastro de Usuário",
-    		tags = "Inserção de Info")
+    		tags = "Usuário - APIs")
     @PostMapping("/usuarios/cadastrar")
     public Usuario cadastrar(@Valid @RequestBody Usuario usuario) {
         return serviceUser.cadastrar(usuario);
     }
     
    @Operation(description = "Endpoint que retorna todos Usuarios.",
-    		tags = "Busca de Info")
+    		tags = "Usuário - APIs")
     @GetMapping("/usuarios/todos")
     public List<Usuario> listarUsuarios(){
     	return serviceUser.listar();
     }
    
    @Operation(description = "Endpoint que busca Usuarios por ID.",
-   		tags = "Busca de Info")
+   		tags = "Usuário - APIs")
    @GetMapping("/usuarios/{id}")
    public Usuario buscarId(@PathVariable Long id) {
 	   return serviceUser.buscarPorId(id);
