@@ -69,8 +69,8 @@ public class TransacoesService {
 		return repTran.findAll();
 	}
 
-	public List<Transacoes> listarPorMetodoPagamento(PagEnum metodo) {
-		return repTran.findByMetodoPagamento(metodo);
+	public List<Transacoes> listarPorMetodoPagamento(String metodo) {
+		return repTran.buscarPorMetodoPagamento(metodo);
 	}
 
 	public List<Transacoes> listarPorTipo(TipoEnum tipo) {
@@ -91,13 +91,13 @@ public class TransacoesService {
 		return repTran.findByTipoAndDataBetween(tipo, inicio, fim);
 	}
 
-	public List<Transacoes> listarPorCategoriaNoPeriodo(CategoriaEnum categoria, LocalDate inicio, LocalDate fim) {
+	public List<Transacoes> listarPorCategoriaNoPeriodo(String categoria, LocalDate inicio, LocalDate fim) {
 		validarPeriodo(inicio, fim);
-		return repTran.findByCategoriaAndDataBetween(categoria, inicio, fim);
+		return repTran.buscarPorCategoriaNoPeriodo(categoria, inicio, fim);
 	}
 
-	public List<Transacoes> listarPorTipoECategoria(TipoEnum tipo, CategoriaEnum categoria) {
-		return repTran.findByTipoAndCategoria(tipo, categoria);
+	public List<Transacoes> listarPorTipoECategoria(String tipo, String categoria) {
+		return repTran.buscarPorTipoECategoria(tipo, categoria);
 	}
 
 	private void validarPeriodo(LocalDate inicio, LocalDate fim) { // validando pra bsucar corretamente
@@ -157,7 +157,6 @@ public class TransacoesService {
 		return repTran.save(transacao);
 	}
 
-	// OTIMIZADAS COM CONSULTAS HQL / SQL
 
 	public List<Transacoes> buscarPorValorMinimo(Double valor) {
 		return repTran.buscarPorValorMinimo(valor);

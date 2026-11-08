@@ -17,9 +17,17 @@ public interface MetasRepository extends JpaRepository<MetasFinanceiras, Long>{
 	boolean existsById(Long id);
 	Optional<MetasFinanceiras> findById(Long id);
 	
-	Optional<MetasFinanceiras> findTopByOrderByValorArrecadadoDesc();                       // maior arrecadado
-	Optional<MetasFinanceiras> findTopByValorArrecadadoIsNotNullOrderByValorArrecadadoAsc(); // menor arrecadado
-	Optional<MetasFinanceiras> findTopByOrderByPercentualDesc();  
+	@Query(nativeQuery = true,
+		       value = "select * from metas order by valor_arrecadado desc limit 1")
+	Optional<MetasFinanceiras> metaMaiorArrecadado();
+
+	@Query(nativeQuery = true,
+	       value = "select * from metas order by valor_arrecadado asc limit 1")
+	Optional<MetasFinanceiras> metaMenorArrecadado();
+	
+	@Query(nativeQuery = true,
+		       value = "select * from metas order by percentual desc limit 1")
+	Optional<MetasFinanceiras> maiorPercentual();  
 	
 	List<MetasFinanceiras> findByCategoria(MetaCategoriaEnum categoria);
 	List<MetasFinanceiras> findByDataBetween(LocalDate inicio, LocalDate fim);

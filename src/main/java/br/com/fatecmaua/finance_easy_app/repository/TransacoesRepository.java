@@ -21,44 +21,47 @@ import br.com.fatecmaua.finance_easy_app.projection.TransacaoUsuarioProjection;
 public interface TransacoesRepository extends JpaRepository<Transacoes, Long> {
 
 	boolean existsById(Long id);
-	
+
 	Optional<Transacoes> findTopByOrderByIdDesc();
-	
-	List<Transacoes> findByMetodoPagamento(PagEnum metodoPagamento);
 
-	List<Transacoes> findByTipo(TipoEnum tipo);
+	@Query(nativeQuery = true, value = "select * from transacao where metodo_pagamento = :metodo")
+	List<Transacoes> buscarPorMetodoPagamento(@Param("metodo") String metodo);
 
-	List<Transacoes> findByCategoria(CategoriaEnum categoria);
+	@Query("from Transacoes t where t.tipo = :tipo")
+	List<Transacoes> findByTipo(@Param("tipo") TipoEnum tipo);
 
-	List<Transacoes> findByDataBetween(LocalDate inicio, LocalDate fim);
+	@Query("from Transacoes t where t.categoria = :categoria")
+	List<Transacoes> findByCategoria(@Param("categoria") CategoriaEnum categoria);
 
-	List<Transacoes> findByTipoAndDataBetween(TipoEnum tipo, LocalDate inicio, LocalDate fim);
+	@Query("from Transacoes t where t.data between :inicio and :fim")
+	List<Transacoes> findByDataBetween(@Param("inicio") LocalDate inicio, @Param("fim") LocalDate fim);
 
-	List<Transacoes> findByCategoriaAndDataBetween(CategoriaEnum categoria, LocalDate inicio, LocalDate fim);
+	@Query("from Transacoes t where t.tipo = :tipo and t.data between :inicio and :fim")
+	List<Transacoes> findByTipoAndDataBetween(@Param("tipo") TipoEnum tipo, @Param("inicio") LocalDate inicio,
+			@Param("fim") LocalDate fim);
 
-	List<Transacoes> findByTipoAndCategoria(TipoEnum tipo, CategoriaEnum categoria);
-	
+	@Query(nativeQuery = true, value = "select * from transacao where categoria = :categoria "
+			+ "and data between :inicio and :fim")
+	List<Transacoes> buscarPorCategoriaNoPeriodo(@Param("categoria") String categoria,
+			@Param("inicio") LocalDate inicio, @Param("fim") LocalDate fim);
+
+	@Query(nativeQuery = true, value = "select * from transacao where tipo = :tipo and categoria = :categoria")
+	List<Transacoes> buscarPorTipoECategoria(@Param("tipo") String tipo, @Param("categoria") String categoria);
+
 	Optional<Transacoes> findTopByUsuarioIdOrderByIdDesc(Long usuarioId);
 
 	List<Transacoes> findByUsuarioId(Long usuarioId, Sort sort);
-	
+
 	@Query("from Transacoes t where t.valor >= :valor order by t.valor desc") // HQL
 	List<Transacoes> buscarPorValorMinimo(@Param("valor") Double valor);
 
-	@Query(nativeQuery = true,
-	       value = "select t.descricao, t.valor, t.tipo, u.nome as usuario "
-	             + "from transacao t "
-	             + "inner join usuarios u on (t.usuario_id = u.id) "
-	             + "where t.valor >= :valor "
-	             + "order by t.valor desc")
+	@Query(nativeQuery = true, value = "select t.descricao, t.valor, t.tipo, u.nome as usuario " + "from transacao t "
+			+ "inner join usuarios u on (t.usuario_id = u.id) " + "where t.valor >= :valor " + "order by t.valor desc")
 	List<TransacaoUsuarioProjection> buscarPorValorMinimoComUsuario(@Param("valor") Double valor);
 
-	@Query("select t.usuario.nome as usuario, t.categoria as categoria, sum(t.valor) as total "
-		     + "from Transacoes t "
-		     + "where t.usuario.id = :usuarioId and t.tipo = :tipo "
-		     + "group by t.usuario.nome, t.categoria "
-		     + "order by sum(t.valor) desc")
-		List<TotalPorCategoria> totalPorCategoria(@Param("usuarioId") Long usuarioId,
-		                                          @Param("tipo") TipoEnum tipo);
-	
+	@Query("select t.usuario.nome as usuario, t.categoria as categoria, sum(t.valor) as total " + "from Transacoes t "
+			+ "where t.usuario.id = :usuarioId and t.tipo = :tipo " + "group by t.usuario.nome, t.categoria "
+			+ "order by sum(t.valor) desc")
+	List<TotalPorCategoria> totalPorCategoria(@Param("usuarioId") Long usuarioId, @Param("tipo") TipoEnum tipo);
+
 }

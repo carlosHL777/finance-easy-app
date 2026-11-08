@@ -59,19 +59,19 @@ public class MetasService {
 	}
 
 	public MetasFinanceiras metaMaiorValorArrecadado() {
-	    return repMet.findTopByOrderByValorArrecadadoDesc()
+	    return repMet.metaMaiorArrecadado()
 	            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND
 ));
 	}
 
 	public MetasFinanceiras metaMenorValorArrecadado() {
-	    return repMet.findTopByValorArrecadadoIsNotNullOrderByValorArrecadadoAsc()
+	    return repMet.metaMenorArrecadado()
 	            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND
 ));
 	}
 
 	public MetasFinanceiras metaMaiorPercentual() {
-	    return repMet.findTopByOrderByPercentualDesc()
+	    return repMet.maiorPercentual()
 	            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND
 ));
 	}

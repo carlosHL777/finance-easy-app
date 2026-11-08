@@ -50,7 +50,7 @@ public class TransacoesController {
 	@Operation(description = "Retorna as transações de um meio de pagamento.", 
 			tags = "Transações - APIs")
 	@GetMapping("/transacoes/por-meio-pagamento")
-	public List<Transacoes> porMetodoPagamento(@RequestParam PagEnum meio) {
+	public List<Transacoes> porMetodoPagamento(@RequestParam String meio) {
 	    return serviceTran.listarPorMetodoPagamento(meio);
 	}
 
@@ -91,7 +91,7 @@ public class TransacoesController {
 			tags = "Transações - APIs")
 	@GetMapping("/transacoes/categoria-no-periodo")
 	public List<Transacoes> categoriaNoPeriodo(
-	        @RequestParam CategoriaEnum categoria,
+	        @RequestParam String categoria,
 	        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate inicio, // formatando a data
 	        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fim) { // formatando a data
 	    return serviceTran.listarPorCategoriaNoPeriodo(categoria, inicio, fim);
@@ -100,7 +100,7 @@ public class TransacoesController {
 	@Operation(description = "Retorna as transações de um tipo em uma categoria.",
 			tags = "Transações - APIs")
 	@GetMapping("/transacoes/tipo-na-categoria")
-	public List<Transacoes> tipoNaCategoria(@RequestParam TipoEnum tipo, @RequestParam CategoriaEnum categoria) {
+	public List<Transacoes> tipoNaCategoria(@RequestParam String tipo, @RequestParam String categoria) {
 	    return serviceTran.listarPorTipoECategoria(tipo, categoria);
 	}
 	
