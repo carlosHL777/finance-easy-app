@@ -70,6 +70,24 @@ public class MetasService {
 		
 	}
 	
+	public MetasFinanceiras atualizarValorArrecadadoPorId(Long id, Double valorArrecadado) {
+		Optional<MetasFinanceiras> busca = repMet.findById(id);
+		
+		if (!repMet.existsById(id)) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		}
+		
+		MetasFinanceiras meta = busca.get();
+		meta.setValorArrecadado(valorArrecadado);
+		meta.setPercentual(0.0);
+		Double percentualConclusao = (
+				meta.getValorArrecadado().doubleValue() / meta.getValorTotal().doubleValue()
+				) * 100; // calculando percentual atualizado
+		meta.setPercentual(percentualConclusao);
+		return repMet.save(meta);
+		
+	}
+	
 	public MetasFinanceiras removerMetaPorId(Long id) {
 		Optional<MetasFinanceiras> busca = repMet.findById(id);
 		

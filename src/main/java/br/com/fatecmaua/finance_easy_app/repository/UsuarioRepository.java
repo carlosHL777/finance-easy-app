@@ -13,5 +13,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
 	boolean existsByEmail(String email); // busca para ver se o email já esta cadastrado
 
 	Optional<Usuario> findByEmail(String email);
+	Optional<Usuario> deleteByEmail(String email);
 
 }

@@ -4,8 +4,12 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,7 +17,6 @@ import br.com.fatecmaua.finance_easy_app.model.MetaCategoriaEnum;
 import br.com.fatecmaua.finance_easy_app.model.MetasFinanceiras;
 import br.com.fatecmaua.finance_easy_app.service.MetasService;
 import io.swagger.v3.oas.annotations.Operation;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 public class MetasController {
@@ -67,5 +70,26 @@ public class MetasController {
 	@GetMapping("/metas/maior-percentual")
 	public MetasFinanceiras retornarMaiorPercentual() {
 		return serviceMetas.metaMaiorPercentual();
+	}
+	
+	@Operation(description = "Atualiza a categoria de uma meta.",
+			tags = "Metas - APIs")
+	@PatchMapping("/metas/{id}/categoria")
+	public MetasFinanceiras atualizarCategoriaMeta(@PathVariable Long id, @RequestParam MetaCategoriaEnum categoria) {
+		return serviceMetas.atualizarCategoriaPorId(id, categoria);
+	}
+	
+	@Operation(description = "Atualiza o valor arrecadado de uma meta.",
+			tags = "Metas - APIs")
+	@PatchMapping("/metas/{id}/valor-arrecadado")
+	public MetasFinanceiras atualizarValorArrecadadoMeta(@PathVariable Long id, @RequestParam Double valorArrecadado) {
+		return serviceMetas.atualizarValorArrecadadoPorId(id, valorArrecadado);
+	}
+	
+	@Operation(description = "Remove uma transação pelo ID.",
+			tags = "Metas - APIs")
+	@DeleteMapping("/metas/{id}")
+	public MetasFinanceiras removerMetaPorId(@PathVariable Long id) {
+		return serviceMetas.removerMetaPorId(id);
 	}
 }
