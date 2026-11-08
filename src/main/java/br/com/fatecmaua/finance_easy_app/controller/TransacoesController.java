@@ -18,6 +18,8 @@ import br.com.fatecmaua.finance_easy_app.model.CategoriaEnum;
 import br.com.fatecmaua.finance_easy_app.model.PagEnum;
 import br.com.fatecmaua.finance_easy_app.model.TipoEnum;
 import br.com.fatecmaua.finance_easy_app.model.Transacoes;
+import br.com.fatecmaua.finance_easy_app.projection.TotalPorCategoria;
+import br.com.fatecmaua.finance_easy_app.projection.TransacaoUsuarioProjection;
 import br.com.fatecmaua.finance_easy_app.service.TransacoesService;
 import io.swagger.v3.oas.annotations.Operation;
 
@@ -104,7 +106,7 @@ public class TransacoesController {
 	
 	@Operation(description = "Remove uma transação pelo ID.",
 			tags = "Transações - APIs")
-	@DeleteMapping("/transacoes/{id}")
+	@DeleteMapping("/transacoes/{id}/remover")
 	public ResponseEntity<Void> remover(@PathVariable Long id) {
 	    serviceTran.remover(id);
 	    return ResponseEntity.noContent().build();
@@ -112,24 +114,49 @@ public class TransacoesController {
 
 	@Operation(description = "Atualiza a categoria de uma transação.",
 			tags = "Transações - APIs")
-	@PatchMapping("/transacoes/{id}/categoria")
+	@PatchMapping("/transacoes/{id}/atualizar-categoria")
 	public Transacoes atualizarCategoria(@PathVariable Long id, @RequestParam CategoriaEnum categoria) {
 	    return serviceTran.atualizarCategoria(id, categoria);
 	}
 
 	@Operation(description = "Atualiza o meio de pagamento de uma transação.",
 			tags = "Transações - APIs")
-	@PatchMapping("/transacoes/{id}/meio-pagamento")
+	@PatchMapping("/transacoes/{id}/atualizar-meio-pagamento")
 	public Transacoes atualizarMetodoPagamento(@PathVariable Long id, @RequestParam PagEnum metodoPagamento) {
 	    return serviceTran.atualizarMetodoPagamento(id, metodoPagamento);
 	}
 
 	@Operation(description = "Atualiza a data de uma transação.",
 			tags = "Transações - APIs")
-	@PatchMapping("/transacoes/{id}/data")
+	@PatchMapping("/transacoes/{id}/atualizar-data")
 	public Transacoes atualizarData(
 	        @PathVariable Long id,
 	        @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate data) {
 	    return serviceTran.atualizarData(id, data);
+	}
+	
+	// OTIMIZADAS HQL / SQL
+	
+	@Operation(description = "Busca (via HQL) as transações com valor a partir de um mínimo.",
+			tags = "Transações - APIs")
+	@GetMapping("/transacoes/buscar-com-valor-minimo")
+	public List<Transacoes> valorMinimo(@RequestParam Double valor) {
+	    return serviceTran.buscarPorValorMinimo(valor);
+	}
+
+	@Operation(description = "Busca (via SQL) as transações com valor mínimo, já com o nome do usuário.",
+			tags = "Transações - APIs")
+	@GetMapping("/transacoes/buscar-com-valor-minimo-com-usuario")
+	public List<TransacaoUsuarioProjection> valorMinimoComUsuario(@RequestParam Double valor) {
+	    return serviceTran.buscarPorValorMinimoComUsuario(valor);
+	}
+
+	@Operation(description = "Total por categoria de um usuário por tipo.",
+			tags = "Transações - APIs")
+	@GetMapping("/transacoes/total-por-tipo-usuario")
+	public List<TotalPorCategoria> totalPorCategoria(
+	        @RequestParam Long usuarioId,
+	        @RequestParam TipoEnum tipo) {
+	    return serviceTran.totalPorCategoria(usuarioId, tipo);
 	}
 }

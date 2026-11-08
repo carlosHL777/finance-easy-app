@@ -41,27 +41,27 @@ public class UsuarioController {
    
 	@Operation(description = "Atualiza o Nome de um Usuario.",
 			tags = "Usuário - APIs")
-	@PatchMapping("/usuarios/{email}/nome")
+	@PatchMapping("/usuarios/{email}/atualizar-nome")
 	public Usuario atualizarNomeUsuario(@PathVariable String email, @RequestParam String nome) {
 		return serviceUser.atualizarNomePorEmail(email, nome);
 	}
 	
 	@Operation(description = "Atualiza a Senha de um Usuario.",
 			tags = "Usuário - APIs")
-	@PatchMapping("/usuarios/{email}/senha")
+	@PatchMapping("/usuarios/{email}/atualizar-senha")
 	public Usuario atualizarSenhaUsuario(@PathVariable String email, @RequestParam String senha) {
 		return serviceUser.atualizarSenhaPorEmail(email, senha);
 	}
 	
 	@Operation(description = "Atualiza a Senha de um Usuario.",
 			tags = "Usuário - APIs")
-	@PatchMapping("/usuarios/{email}/profissao")
+	@PatchMapping("/usuarios/{email}/atualizar-profissao")
 	public Usuario atualizarProfissaoUsuario(@PathVariable String email, @RequestParam String profissao) {
 		return serviceUser.atualizarProfissaoPorEmail(email, profissao);
 	}
 	
 	@Operation(description = "Remove uma transação pelo ID.",
-			tags = "Metas - APIs")
+			tags = "Usuário - APIs")
 	@DeleteMapping("/usuarios/{email}/remover")
 	public Usuario removerUsuario(@PathVariable String email) {
 		return serviceUser.removerUsuarioPorEmail(email);

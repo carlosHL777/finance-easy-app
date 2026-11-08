@@ -11,19 +11,33 @@ import org.springframework.web.server.ResponseStatusException;
 
 import br.com.fatecmaua.finance_easy_app.model.MetaCategoriaEnum;
 import br.com.fatecmaua.finance_easy_app.model.MetasFinanceiras;
+import br.com.fatecmaua.finance_easy_app.model.Usuario;
 import br.com.fatecmaua.finance_easy_app.repository.MetasRepository;
+import br.com.fatecmaua.finance_easy_app.repository.UsuarioRepository;
 
 @Service
 public class MetasService {
 
 	@Autowired
 	private final MetasRepository repMet;
+	private final UsuarioRepository repUser;
 
-	public MetasService(MetasRepository repMet) {
-		this.repMet = repMet;
+	public MetasService(MetasRepository repMet, UsuarioRepository repUser) {
+	    this.repMet = repMet;
+	    this.repUser = repUser;
 	}
 
 	public MetasFinanceiras criar(MetasFinanceiras meta) { // criando meta
+		// remover os campos de Id, Percentual na hora de criar
+		// usar sintaxe correta para inserir o id do usuario
+		// ex. ->   "usuario": { "id": 2 }
+		
+		
+	    Long usuarioId = meta.getUsuario().getId();
+	    Usuario usuario = repUser.findById(usuarioId).orElseThrow(() ->
+	            new ResponseStatusException(HttpStatus.NOT_FOUND));
+	    meta.setUsuario(usuario);
+		
 		meta.setPercentual(0.0);
 		Double percentualConclusao = (meta.getValorArrecadado().doubleValue() / meta.getValorTotal().doubleValue()) * 100; // calculando percentual
 
@@ -32,6 +46,10 @@ public class MetasService {
 		return repMet.save(meta);
 	}
 
+	public List<MetasFinanceiras> listarMetas() {
+		return repMet.findAll();
+	}
+	
 	public List<MetasFinanceiras> listarPorCategorias(MetaCategoriaEnum categoria) {
 		return repMet.findByCategoria(categoria);
 	}

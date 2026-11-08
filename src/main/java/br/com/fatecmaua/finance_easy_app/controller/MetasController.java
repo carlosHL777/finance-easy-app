@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.fatecmaua.finance_easy_app.model.MetaCategoriaEnum;
 import br.com.fatecmaua.finance_easy_app.model.MetasFinanceiras;
+import br.com.fatecmaua.finance_easy_app.model.Transacoes;
 import br.com.fatecmaua.finance_easy_app.service.MetasService;
 import io.swagger.v3.oas.annotations.Operation;
 
@@ -33,6 +34,13 @@ public class MetasController {
 	@PostMapping("/metas/cadastrar")
 	public MetasFinanceiras cadastrar(@RequestBody MetasFinanceiras meta) {
 		return serviceMetas.criar(meta);
+	}
+	
+	@Operation(description = "Endpoint resposável por retornar todas Metas.",
+			tags = "Metas - APIs")
+	@GetMapping("/metas/todas")
+	public List<MetasFinanceiras> listarMetas() {
+		return serviceMetas.listarMetas();
 	}
 	
 	@Operation(description = "Retorna as metas de uma categoria.",

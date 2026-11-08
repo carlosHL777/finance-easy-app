@@ -9,6 +9,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -37,13 +39,17 @@ public class Transacoes {
 	@Enumerated(EnumType.STRING)
 	@Schema(name = "Método", description = "Método de Pagamento usado na Transação.", example = "Crédito")
 	private PagEnum metodoPagamento; // meio pag isso aí 👌
+	@ManyToOne
+	@JoinColumn(name = "usuario_id")
+	@Schema(name = "Id Usuario", description = "ID do usuário responsável pela Transação.", example = "1")
+	private Usuario usuario;
 	
 	public Transacoes() {
 		
 	}
 	
 	public Transacoes(Long id, String descricao, CategoriaEnum categoria, TipoEnum tipo, PagEnum MetodoPagamento, LocalDate data,
-			Double valor, Double valorAtual) {
+			Double valor, Double valorAtual, Usuario usuario) {
 		super();
 		this.id = id;
 		this.descricao = descricao;
@@ -53,6 +59,15 @@ public class Transacoes {
 		this.data = data;
 		this.valor = valor;
 		this.valorAtual = valorAtual;
+		this.usuario = usuario;
+	}
+	
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	public PagEnum getMetodoPagamento() {

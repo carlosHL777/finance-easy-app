@@ -9,6 +9,8 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -34,6 +36,20 @@ public class MetasFinanceiras {
 	private LocalDate data;
 	@Schema(name = "Percentual", description = "Percentual de conclusão da Meta", example = "67%")
 	private Double percentual;
+	@ManyToOne
+	@JoinColumn(name = "usuario_id")
+	@Schema(name = "Id Usuario", description = "ID do usuário responsável pela Meta.", example = "1")
+	private Usuario usuario;
+
+	
+	
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
 
 	public Double getPercentual() {
 		return percentual;
@@ -56,7 +72,7 @@ public class MetasFinanceiras {
 	}
 
 	public MetasFinanceiras(Long id, String nomeMeta, String descricao, Double valorTotal, Double valorArrecadado,
-			MetaCategoriaEnum categoria, LocalDate data, Double percentual) {
+			MetaCategoriaEnum categoria, LocalDate data, Double percentual, Usuario usuario) {
 		super();
 		this.id = id;
 		this.nomeMeta = nomeMeta;
@@ -66,6 +82,7 @@ public class MetasFinanceiras {
 		this.categoria = categoria;
 		this.data = data;
 		this.percentual = percentual;
+		this.usuario = usuario;
 	}
 
 	public LocalDate getData() {
