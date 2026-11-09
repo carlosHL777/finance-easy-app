@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import br.com.fatecmaua.finance_easy_app.model.MetaCategoriaEnum;
@@ -31,5 +33,9 @@ public interface MetasRepository extends JpaRepository<MetasFinanceiras, Long>{
 	
 	List<MetasFinanceiras> findByCategoria(MetaCategoriaEnum categoria);
 	List<MetasFinanceiras> findByDataBetween(LocalDate inicio, LocalDate fim);
+	
+	@Modifying // excluindo transações do usuario
+	@Query("delete from MetasFinanceiras m where m.usuario.id = :usuarioId")
+	void apagarPorUsuario(@Param("usuarioId") Long usuarioId);
 
 }

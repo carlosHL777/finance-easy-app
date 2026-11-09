@@ -6,12 +6,12 @@ import java.util.Optional;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import br.com.fatecmaua.finance_easy_app.model.CategoriaEnum;
-import br.com.fatecmaua.finance_easy_app.model.PagEnum;
 import br.com.fatecmaua.finance_easy_app.model.TipoEnum;
 import br.com.fatecmaua.finance_easy_app.model.Transacoes;
 import br.com.fatecmaua.finance_easy_app.projection.TotalPorCategoria;
@@ -63,5 +63,9 @@ public interface TransacoesRepository extends JpaRepository<Transacoes, Long> {
 			+ "where t.usuario.id = :usuarioId and t.tipo = :tipo " + "group by t.usuario.nome, t.categoria "
 			+ "order by sum(t.valor) desc")
 	List<TotalPorCategoria> totalPorCategoria(@Param("usuarioId") Long usuarioId, @Param("tipo") TipoEnum tipo);
+	
+	@Modifying // excluindo transações do usuario
+	@Query("delete from Transacoes t where t.usuario.id = :usuarioId")
+	void apagarPorUsuario(@Param("usuarioId") Long usuarioId);
 
 }

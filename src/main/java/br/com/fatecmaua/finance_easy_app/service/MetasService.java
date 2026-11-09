@@ -27,23 +27,31 @@ public class MetasService {
 	    this.repUser = repUser;
 	}
 
-	public MetasFinanceiras criar(MetasFinanceiras meta) { // criando meta
-		// remover os campos de Id, Percentual na hora de criar
-		// usar sintaxe correta para inserir o id do usuario
-		// ex. ->   "usuario": { "id": 2 }
-		
-		
+	public MetasFinanceiras criar(MetasFinanceiras meta) {
+	    if (meta.getUsuario() == null || meta.getUsuario().getId() == null) {
+	        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+	                "Informe o usuario da meta: \"usuario\": { \"id\": 1 }");
+	    }
+	    if (meta.getValorTotal() == null || meta.getValorTotal() <= 0) {
+	        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+	                "O valor total da meta deve ser maior que zero");
+	    }
+	    if (meta.getValorArrecadado() == null || meta.getValorArrecadado() < 0) {
+	        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+	                "O valor arrecadado deve ser informado e não pode ser negativo");
+	    }
+
 	    Long usuarioId = meta.getUsuario().getId();
 	    Usuario usuario = repUser.findById(usuarioId).orElseThrow(() ->
-	            new ResponseStatusException(HttpStatus.NOT_FOUND));
+	            new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
 	    meta.setUsuario(usuario);
-		
-		meta.setPercentual(0.0);
-		Double percentualConclusao = (meta.getValorArrecadado().doubleValue() / meta.getValorTotal().doubleValue()) * 100; // calculando percentual
 
-		meta.setId(null);
-		meta.setPercentual(Math.round(percentualConclusao * 100.0) / 100.0);
-		return repMet.save(meta);
+	    double percentual = (meta.getValorArrecadado() / meta.getValorTotal()) * 100;
+	    percentual = Math.min(percentual, 100.0);   // limitando o percentutal de conclusão
+	    meta.setPercentual(Math.round(percentual * 100.0) / 100.0);
+
+	    meta.setId(null);
+	    return repMet.save(meta);
 	}
 
 	public List<MetasFinanceiras> listarMetas() {

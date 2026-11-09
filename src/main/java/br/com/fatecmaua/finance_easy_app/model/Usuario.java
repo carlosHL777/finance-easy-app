@@ -20,22 +20,22 @@ public class Usuario {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Schema(name = "Id", description = "Id do Usuário", example = "123")
+	@Schema(description = "Id do Usuário", example = "123")
 	private Long id;
 	@NotBlank
 	@Column(nullable = false) // evitando null
-	@Schema(name = "Nome", description = "Nome do Usuário", example = "Guilherme Barbosa da Cruz")
+	@Schema(description = "Nome do Usuário", example = "Guilherme Barbosa da Cruz")
 	private String nome;
-	@Schema(name = "Profissão", description = "Profissão do Usuário", example = "Torneiro Mecânico")
+	@Schema(description = "Profissão do Usuário", example = "Torneiro Mecânico")
 	private String profissao;
 	@NotBlank
 	@Column(unique = true, nullable = false) // email ÚNICO, n pode ter mais de um no mesmo
-	@Schema(name = "E-mail", description = "Endereço Eletrônico do Usuário", example = "guizin@email.com")
+	@Schema(description = "Endereço Eletrônico do Usuário", example = "guizin@email.com")
 	private String email;
 	@Column(length = 100) // para salvar HASH da senha corretamente😜
-	@Schema(name = "Senha", description = "Senha Secreta do Usuário", example = "12345")
+	@Schema(description = "Senha Secreta do Usuário", example = "12345")
 	private String senha;
-	@Schema(name = "Data de Nascimento", description = "Data de Nascimento do Usuário", example = "2026-01-01")
+	@Schema(description = "Data de Nascimento do Usuário", example = "2026-01-01")
 	private LocalDate dataNasc;
 	@Enumerated(EnumType.STRING) // permissão de usuário
 	// por padrão, todos são USER blz

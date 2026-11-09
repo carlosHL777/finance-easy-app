@@ -19,26 +19,26 @@ public class MetasFinanceiras {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Schema(name = "Id", description = "Id da Meta", example = "123")
+	@Schema(description = "Id da Meta", example = "123")
 	private Long id;
-	@Schema(name = "Nome", description = "Nome da Meta", example = "GTA 6")
+	@Schema(description = "Nome da Meta", example = "GTA 6")
 	private String nomeMeta;
-	@Schema(name = "Descrição", description = "Descrição da Meta", example = "Realizar a compra do Game GTA 6, da Rockstar Games.")
+	@Schema(description = "Descrição da Meta", example = "Realizar a compra do Game GTA 6, da Rockstar Games.")
 	private String descricao;
-	@Schema(name = "Valor da Meta", description = "Valor total que compõe a Meta", example = "20.000,00")
+	@Schema(description = "Valor total que compõe a Meta", example = "600")
 	private Double valorTotal;
-	@Schema(name = "Valor Arrecadado", description = "Valor que o Usuário guardou para aquela Meta em específico.", example = "5.000,00")
+	@Schema(description = "Valor que o Usuário guardou para aquela Meta em específico.", example = "450")
 	private Double valorArrecadado;
 	@Enumerated(EnumType.STRING)
-	@Schema(name = "Categoria", description = "Categoria da Meta", example = "Compra")
+	@Schema(description = "Categoria da Meta", example = "COMPRA")
 	private MetaCategoriaEnum categoria;
-	@Schema(name = "Data", description = "Data do registro da Meta", example = "2026-08-05")
+	@Schema(description = "Data do registro da Meta", example = "2026-08-05")
 	private LocalDate data;
-	@Schema(name = "Percentual", description = "Percentual de conclusão da Meta", example = "67%")
+	@Schema(description = "Percentual de conclusão da Meta", example = "67")
 	private Double percentual;
 	@ManyToOne
 	@JoinColumn(name = "usuario_id")
-	@Schema(name = "Id Usuario", description = "ID do usuário responsável pela Meta.", example = "1")
+	@Schema(description = "ID do usuário responsável pela Meta.", example = "{ \"id\" : 1 }")
 	private Usuario usuario;
 
 	

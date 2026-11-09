@@ -19,29 +19,29 @@ public class Transacoes {
 
 	@Id //campo do "ID" (ex. 1, 2, 3...), gerado automaticamente a cada registro - Carlos H. 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Schema(name = "Id", description = "Id da Transação cadastrada.", example = "123")
+	@Schema(description = "Id da Transação cadastrada.", example = "123")
 	private Long id; 
-	@Schema(name = "Descrição", description = "Descrição da Transação cadastrada.", example = "Honda Civic G10 2017")
+	@Schema(description = "Descrição da Transação cadastrada.", example = "Honda Civic G10 2017")
 	private String descricao; // qual a transação
-	@Schema(name = "Valor", description = "Valor da Transação cadastrada.", example = "93.900,00")
+	@Schema(description = "Valor da Transação cadastrada.", example = "93000")
 	private Double valor; // valor da transação
-	@Schema(name = "Valor Atual", description = "Valor que o Usuário possui atualmente no BD, atualizado dinamicamente"
-			+ "conforme novos registros.", example = "200,00")
+	@Schema(description = "Valor que o Usuário possui atualmente no BD, atualizado dinamicamente"
+			+ "conforme novos registros.", example = "200")
 	private Double valorAtual; //saldo atual (valor da nova transação +- valor atual)
-	@Schema(name = "Data", description = "Data do cadastro da Transação.", example = "2026-07-01")
+	@Schema(description = "Data do cadastro da Transação.", example = "2026-07-01")
 	private LocalDate data; // registro de data
 	@Enumerated(EnumType.STRING)
-	@Schema(name = "Tipo", description = "Tipo (Renda ou Gasto) da Transação.", example = "Gasto")
+	@Schema(description = "Tipo (Renda ou Gasto) da Transação.", example = "GASTO")
 	private TipoEnum tipo; // tipo -> Renda / Gasto
 	@Enumerated(EnumType.STRING)
-	@Schema(name = "Categoria", description = "Categoria da Transação.", example = "Transporte")
+	@Schema(description = "Categoria da Transação.", example = "TRANSPORTE")
 	private CategoriaEnum categoria; // categoria da transação
 	@Enumerated(EnumType.STRING)
-	@Schema(name = "Método", description = "Método de Pagamento usado na Transação.", example = "Crédito")
+	@Schema(description = "Método de Pagamento usado na Transação.", example = "CREDITO")
 	private PagEnum metodoPagamento; // meio pag isso aí 👌
 	@ManyToOne
 	@JoinColumn(name = "usuario_id")
-	@Schema(name = "Id Usuario", description = "ID do usuário responsável pela Transação.", example = "1")
+	@Schema(description = "ID do usuário responsável pela Transação.", example = "{ \"id\" : 1 }")
 	private Usuario usuario;
 	
 	public Transacoes() {

@@ -6,11 +6,13 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import br.com.fatecmaua.finance_easy_app.model.MetasFinanceiras;
 import br.com.fatecmaua.finance_easy_app.model.RoleEnum;
 import br.com.fatecmaua.finance_easy_app.model.Usuario;
+import br.com.fatecmaua.finance_easy_app.repository.MetasRepository;
+import br.com.fatecmaua.finance_easy_app.repository.TransacoesRepository;
 import br.com.fatecmaua.finance_easy_app.repository.UsuarioRepository;
 
 @Service
@@ -22,9 +24,14 @@ public class UsuarioService {
 
 	@Autowired
 	private final UsuarioRepository repUser;
+	private final TransacoesRepository repTran;
+	private final MetasRepository repMet;
 
-	public UsuarioService(UsuarioRepository repUser) { // injeção de dependência
+
+	public UsuarioService(UsuarioRepository repUser, TransacoesRepository repTran, MetasRepository repMet) {
 		this.repUser = repUser;
+		this.repTran = repTran;
+		this.repMet = repMet;
 	}
 
 	public Usuario cadastrar(Usuario usuario) {
@@ -86,16 +93,23 @@ public class UsuarioService {
 		
 	}
 	
-	public Usuario removerUsuarioPorEmail(String email) {
-		Optional<Usuario> busca = repUser.findByEmail(email);
-		
-		if (!repUser.existsByEmail(email)) {
+	@Transactional // metodo q remove das outras models
+	public void remover(Long id) {
+		if (!repUser.existsById(id)) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		}
-		
-		Usuario user = busca.get();
-		repUser.deleteByEmail(email);
-		return user;
+
+		repTran.apagarPorUsuario(id); 
+		repMet.apagarPorUsuario(id); 
+		repUser.deleteById(id);
+	}
+
+	@Transactional // remover "final"
+	public void removerPorEmail(String email) {
+	    Usuario usuario = repUser.findByEmail(email.trim().toLowerCase())
+	            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+	    remover(usuario.getId());  
 	}
 	
 }

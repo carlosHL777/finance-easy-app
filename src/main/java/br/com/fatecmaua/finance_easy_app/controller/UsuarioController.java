@@ -2,6 +2,7 @@ package br.com.fatecmaua.finance_easy_app.controller;
 
 import java.util.List;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -60,11 +61,12 @@ public class UsuarioController {
 		return serviceUser.atualizarProfissaoPorEmail(email, profissao);
 	}
 	
-	@Operation(description = "Remove uma transação pelo ID.",
+	@Operation(description = "Remove um usuário pelo e-mail, junto com suas transações e metas.",
 			tags = "Usuário - APIs")
-	@DeleteMapping("/usuarios/{email}/remover")
-	public Usuario removerUsuario(@PathVariable String email) {
-		return serviceUser.removerUsuarioPorEmail(email);
+	@DeleteMapping("/usuarios/por-email")
+	public ResponseEntity<Void> removerPorEmail(@RequestParam String email) {
+		serviceUser.removerPorEmail(email);
+	    return ResponseEntity.noContent().build();
 	}
    
 }
