@@ -32,7 +32,7 @@ Não é necessário instalar banco de dados nem o Maven.
 **1. Clone o repositório**
 
 ```bash
-git clone https://github.com/SEU_USUARIO/finance-easy-app.git
+git clone https://github.com/carlosHL777/finance-easy-app.git
 ```
 
 **2. Entre na pasta que contém o arquivo `pom.xml`**
