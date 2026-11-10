@@ -4,7 +4,7 @@ API REST de controle financeiro pessoal, feita com Spring Boot como projeto de e
 
 O sistema gerencia três recursos:
 
-- **Usuários:** cadastro com senha criptografada (BCrypt).
+- **Usuários:** cadastro e APIs integradas.
 - **Transações:** rendas e gastos com categoria, meio de pagamento e data. Cada transação guarda o saldo acumulado do usuário (`valorAtual`).
 - **Metas financeiras:** metas com valor total, valor arrecadado e percentual de conclusão.
 
